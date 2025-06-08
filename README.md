@@ -1,88 +1,51 @@
-# PCI DSS Password Policy Audit (v4.0) – Internal Lab
+🔍 Password Policy Validation – Interview & Evidence Log
 
-Simulated internal audit of local Windows password policies based on **PCI DSS v4.0 Requirement 8**.  
-This lab mimics a real-world compliance review scenario where separation of duties is enforced.
-
----
-
-## 🎯 Objective
-
-- Identify and document weak password settings.
-- Validate gaps against PCI DSS v4.0 controls.
-- Remediate findings and collect post-fix evidence.
-- Demonstrate process-driven audit readiness.
+This document simulates a real-world PCI DSS v4.0 password policy audit, structured from the perspective of an Internal Security Assessor (ISA). The ISA does not apply system changes but instead requests that the IT Lead (Stone Cold Steve Austin) demonstrate compliance settings, which are then captured as evidence.
 
 ---
 
-## 🧑‍💼 Roles
+## 🧑‍💼 Interview Questions and Evidence Collection
 
-- **Auditor:** Internal Security Auditor (You)
-- **IT Lead (Remediator):** *Stone Cold Steve Austin*  
-  _“Fixes applied by authorized personnel. Auditor did not perform changes due to SoD (Separation of Duties).”_
+As the ISA, I requested evidence for each PCI DSS v4.0 Requirement 8 password control. Screenshots were taken during the session to verify what the IT Lead showed.
 
----
+### ✅ Pre-Remediation Questions and Screenshots
 
-## 📂 Folder Structure
-
----
-
-## 🔍 Lab Steps (Audit Flow)
-
-1. Logged into Windows 10 VM as auditor
-2. Collected password policy via:
-   - GUI: `secpol.msc`
-   - CLI: `net accounts`, `Get-LocalUser | Select Name, PasswordLastSet`
-3. Captured screenshots of current settings
-4. Interviewed IT Lead for clarification (see below)
-5. Compared results to PCI DSS v4.0 Req 8
-6. IT Lead remediated settings
-7. Captured post-remediation screenshots
-8. Finalized report and evidence file
+| PCI Req | Assessor Question | Screenshot |
+|---------|-------------------|------------|
+| 8.2.6   | Can you show me your password configuration standard? | *(Refer to SharePoint entry – not available)* |
+| 8.3.1   | Can you pull up the minimum password length setting? | ![](screenshots_pre/before_min_password_length.png) |
+| 8.3.5   | Can you show me how many previous passwords are remembered? | ![](screenshots_pre/before_password_history_1.png) |
+| 8.3.6   | Where can I verify that password complexity is enabled? | ![](screenshots_pre/before_complexity_disabled.png) |
+| 8.3.7   | Please show me the password expiration setting (in days). | ![](screenshots_pre/before_password_age_180_days.png) |
+| 8.3.9   | Can you show me your account lockout threshold? | ![](screenshots_pre/before_lockout_threshold_20_attempts.png) |
+| 8.3.9   | Can you show me lockout duration and reset time settings? | ![](screenshots_pre/before_lockout_duration_5min.png) |
+| -       | Show me 'net accounts' CLI output for global policy confirmation. | ![](screenshots_pre/before_net_accounts_output.png) |
+| -       | Can you show me PasswordLastSet date from CLI? | ![](screenshots_pre/before_passwordlastset_output.png) |
 
 ---
 
-## 🎙️ Mock Interview with IT Lead
+### 🛠️ Post-Remediation Validation and Follow-Up
 
-> **Date:** [Insert Date]  
-> **Auditor:** You  
-> **Interviewee:** Stone Cold Steve Austin
-
-| PCI Req | Interview Question                                                           | Auditor Validation               |
-|---------|-------------------------------------------------------------------------------|----------------------------------|
-| 8.3.1   | Are passwords at least 12 characters?                                         | Screenshot confirmed ✅          |
-| 8.3.5   | Is password history enforced?                                                 | Screenshot confirmed ✅          |
-| 8.3.6   | Is complexity enforced (upper/lower/num/symbol)?                              | Screenshot confirmed ✅          |
-| 8.3.7   | What is the max password age configured?                                      | Screenshot confirmed ✅          |
-| 8.3.9   | What happens after multiple failed login attempts?                            | Screenshot confirmed ✅          |
-| Other   | Where are these settings documented?                                          | "Stored in SharePoint IT Docs"  |
+| PCI Req | Follow-Up Question | Screenshot |
+|---------|--------------------|------------|
+| 8.2.6   | Was the configuration standard updated after changes? | *(Pending update to SharePoint)* |
+| 8.3.1   | Please show me updated password length setting. | ![](screenshots_post/after_min_password_length_12.png) |
+| 8.3.5   | Please show me updated password history setting. | ![](screenshots_post/after_password_history_4.png) |
+| 8.3.6   | Can you show complexity settings again for confirmation? | ![](screenshots_post/after_complexity_enabled.png) |
+| 8.3.7   | Show password expiration setting after remediation. | ![](screenshots_post/after_password_age_90_days.png) |
+| 8.3.9   | Can you show lockout threshold and duration again? | ![](screenshots_post/after_lockout_threshold_10.png)<br>![](screenshots_post/after_lockout_duration_30min.png) |
+| -       | Show me updated 'net accounts' CLI output. | ![](screenshots_post/after_net_accounts_output.png) |
 
 ---
 
-## 📄 Files Included
+## 📝 Notes
 
-| File Name                                      | Description                                      |
-|------------------------------------------------|--------------------------------------------------|
-| `Internal_PCI_Password_Audit_Report.docx`      | Main findings report with executive summary      |
-| `Password_Policy_Audit_Evidence_File.docx`     | Before screenshots with captions                 |
-| `Password_Policy_Audit_Evidence_File_Updated.docx` | Post-remediation proof and verification      |
-| `screenshots_pre/`                             | All pre-remediation evidence                     |
-| `screenshots_post/`                            | All post-remediation evidence                    |
+- All settings were demonstrated by the IT Lead and validated visually.
+- Screenshots were captured as part of the audit session.
+- IT Lead confirmed remediation changes were submitted via Jira ticket #4569.
 
----
 
-## 🧩 Notes
 
-- Lab built to simulate a **real internal audit workflow**
-- No perfect configuration at start — issues were intentionally staged
-- Screenshots labeled clearly for GitHub review and report traceability
-
----
-
-## 🏁 Outcome
-
-✔ PCI DSS v4.0 Requirement 8 compliance was verified  
-✔ Separation of duties observed  
-✔ Ready for GitHub upload or stakeholder submission
 
 
 
