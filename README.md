@@ -1,128 +1,83 @@
 # 🔐 PCI DSS Password Policy Audit Lab (Windows 10 VM)
 
-This lab simulates a real-world internal PCI DSS v4.0.1 audit focused on password policy validation and enforcement.  
-As an Internal Security Assessor (ISA), I performed a walkthrough of a Windows 10 virtual machine to validate compliance with Requirement 8.
+This lab simulates a real-world internal audit of **PCI DSS v4.0.1 Requirement 8** – focused on password policy enforcement and remediation on a standalone Windows 10 virtual machine.
+
+As the Internal Security Assessor (ISA), I conducted interviews, gathered screenshot evidence, documented findings, and validated remediations per PCI controls.
 
 ---
 
-## 👤 Role
+## 👤 Role Details
 
-- **Auditor:** Alex Bolden, Internal Security Assessor (ISA)  
-- **System Owner:** Stone Cold Steve Austin – IT Lead  
-- **Target System:** Windows 10 Standalone VM (Non-Domain Joined)  
-- **Audit Period:** June 2025  
+| Role            | Name                                |
+|-----------------|-------------------------------------|
+| Auditor         | Alex Bolden – Internal Security Assessor (ISA) |
+| System Owner    | Stone Cold Steve Austin – IT Lead   |
+| Target System   | Windows 10 Standalone VM (non-domain) |
+| Audit Date      | June 8, 2025                           |
+
+---
+
+## 🔍 Assessor Walkthrough – Mock Interview Table (Pre-Remediation)
+
+| PCI Req | Interview Question | Screenshot |
+|---------|--------------------|------------|
+| 8.3.6 | *Can you show me the current minimum password length setting in secpol.msc?* | ![before_min_password_length.png](screenshots_pre/before_min_password_length.png) |
+| 8.3.6 | *Can you show me where password complexity is enabled on this machine?* | ![before_complexity_disabled.png](screenshots_pre/before_complexity_disabled.png) |
+| 8.3.9 | *Can you show me when passwords are set to expire?* | ![before_password_age_180_days.png](screenshots_pre/before_password_age_180_days.png) |
+| 8.3.7 | *Can you show me the system setting that prevents users from reusing previous passwords?* | ![before_password_history_1.png](screenshots_pre/before_password_history_1.png) |
+| 8.3.4 | *How many failed login attempts trigger account lockout?* | ![before_lockout_threshold_20_attempts.png](screenshots_pre/before_lockout_threshold_20_attempts.png) |
+| 8.3.4 | *How long does the lockout last after threshold is reached?* | ![before_lockout_duration_5min.png](screenshots_pre/before_lockout_duration_5min.png) |
+| 8.6.3 | *Can you show the CLI output of password policy enforcement?* | ![before_net_accounts_output.png](screenshots_pre/before_net_accounts_output.png) |
 
 ---
 
 ## 📋 Internal PCI DSS Password Policy Audit Report
 
-**Confidential – For Internal Use Only**
-
-- **Organization:** Google.com  
-- **System Owner:** Stone Cold Steve Austin - IT Lead  
-- **Audit Performed By:** Alex Bolden– Internal PCI Auditor  
-- **Audit Date:** June 2025  
-- **Target System:** Windows 10 Standalone VM  
-
----
-
 ### Executive Summary
 
-This audit report presents the results of an internal assessment of the password authentication policies configured on a Windows 10 virtual machine used for PCI-related administrative functions.
-
-The goal was to validate compliance with **PCI DSS v4.0.1 Requirement 8**. The assessment revealed multiple deficiencies in system configuration — most notably in password length, complexity, expiration, lockout thresholds, and temporary password handling.
+This audit reviewed password policy controls on a Windows 10 virtual machine used for PCI-sensitive administrative functions. Several misconfigurations were discovered that deviate from PCI DSS v4.0.1 Requirement 8. Each issue is documented below with supporting evidence and mapped to the relevant requirement.
 
 ---
 
-### System Design Description
+### Audit Findings Table (Pre-Remediation Evidence)
 
-The target system is a Windows 10 standalone VM simulating access to cardholder data. It is configured using local security policy (`secpol.msc`) and does not rely on domain-joined group policies. Local user accounts are used to validate enforcement of password and account lockout policies.
-
-System changes are applied manually and validated using PowerShell and command-line tools.
-
----
-
-### Observations
-
-During the audit, it was noted that several password-related controls were misconfigured. Key observations include:
-
-- Password length set below PCI minimum  
-- Complexity settings disabled  
-- Expiration and reuse policies misaligned with standards  
-- Lockout thresholds too lenient  
-- No enforcement for temp password reset  
-- No documented configuration standard or user password guidance was provided  
-
----
-
-### Audit Findings
-
-| Finding # | Description | PCI DSS Requirement | Risk | Recommendation | Due Date |
-|-----------|-------------|---------------------|------|----------------|----------|
-| 8.01 | Password minimum length is set to 8 characters | 8.3.6 | Susceptible to brute-force attacks | Set password length to 12 characters | 2025-06-20 |
-| 8.02 | Password complexity is disabled | 8.3.7 | Allows weak passwords with low entropy | Enable complexity: uppercase, lowercase, number, special character | 2025-06-20 |
-| 8.03 | Password expiration set to 180 days | 8.3.8 | Extended expiration increases exposure | Reduce to 90-day expiration per PCI DSS | 2025-06-20 |
-| 8.04 | Only 1 password remembered | 8.3.9 | Allows password cycling | Remember last 4 passwords | 2025-06-20 |
-| 8.05 | Lockout threshold set to 20 attempts | 8.3.11 | Increased brute-force risk | Lower to 10 failed attempts | 2025-06-20 |
-| 8.06 | Lockout duration only 5 minutes | 8.3.12 | Resets too quickly for protection | Set to 30 minutes or manual reset | 2025-06-20 |
-| 8.07 | Temporary passwords don’t expire | 8.3.13 | Long-lived temp access risk | Enforce 24-hour expiry + reset at login | 2025-06-20 |
+| Finding # | Description | PCI Req | Risk | Recommendation | Screenshot |
+|-----------|-------------|---------|------|----------------|------------|
+| 8.01 | Password minimum length is set to 8 characters | 8.3.6 | Susceptible to brute-force attacks | Set to minimum 12 characters | ![before_min_password_length.png](screenshots_pre/before_min_password_length.png) |
+| 8.02 | Password complexity is disabled | 8.3.6 | Weak, guessable passwords allowed | Enable complexity: upper/lower/number/symbol | ![before_complexity_disabled.png](screenshots_pre/before_complexity_disabled.png) |
+| 8.03 | Passwords expire after 180 days | 8.3.9 | Long exposure window if stolen | Reduce to 90-day expiration | ![before_password_age_180_days.png](screenshots_pre/before_password_age_180_days.png) |
+| 8.04 | Only 1 password remembered | 8.3.7 | Allows reuse and cycling | Store at least last 4 passwords | ![before_password_history_1.png](screenshots_pre/before_password_history_1.png) |
+| 8.05 | Lockout threshold is 20 attempts | 8.3.4 | Higher risk of brute-force login | Reduce to max 10 attempts | ![before_lockout_threshold_20_attempts.png](screenshots_pre/before_lockout_threshold_20_attempts.png) |
+| 8.06 | Lockout duration is 5 minutes | 8.3.4 | Too short – attacker can retry quickly | Set to 30 minutes or manual reset | ![before_lockout_duration_5min.png](screenshots_pre/before_lockout_duration_5min.png) |
+| 8.07 | CLI output shows weak overall configuration | 8.6.3 | No strong complexity or enforcement baseline | Remediate via security policy & enforcement tools | ![before_net_accounts_output.png](screenshots_pre/before_net_accounts_output.png) |
 
 ---
 
 ### Remediation Plan
 
-The System Owner is responsible for applying the above recommendations by **June 20, 2025**.  
-Changes can be made via `secpol.msc` or GPO.
-
-A follow-up validation audit will be performed after the deadline. All remediated controls must be evidenced with screenshots and timestamped confirmation.
+All remediations were assigned to the IT Lead, Stone Cold Steve Austin.  
+Configuration changes were made using `secpol.msc` and validated with screenshots.
 
 ---
 
-### Conclusion
+## ✅ Post-Remediation Screenshot Evidence
 
-This internal audit has identified multiple deviations from PCI DSS Requirement 8. A formal remediation effort is required to address the gaps before the system can be marked compliant.
-
-Once changes are implemented, a compliance verification walkthrough will confirm closure of each finding.
-
----
-
-## 🔍 Assessor Interview & Evidence Log
-
-| PCI Req | Interview Question | Screenshot |
-|---------|--------------------|------------|
-| **8.3.7** | Can you show that users cannot reuse any of their last 4 passwords? | ![](screenshots_post/after_password_history_4.png) |
-| **8.3.8** | Where is your documented guidance on password creation, reuse, and reporting? | _(Jira ticket or SharePoint entry pending)_ |
-| **8.3.9** | Can you show that passwords are configured to expire every 90 days? | ![](screenshots_post/after_password_age_90_days.png) |
-| **8.3.4** | What happens after 10 failed login attempts? And how long is the lockout duration? | ![](screenshots_post/after_lockout_threshold_10.png)<br>![](screenshots_post/after_lockout_duration_30min.png) |
-| **8.6.3** | How do you ensure passwords are constructed with complexity appropriate to their usage? | ![](screenshots_post/after_complexity_enabled.png) |
+| Setting | Screenshot |
+|---------|------------|
+| Min Password Length (12) | ![after_min_password_length_12.png](screenshots_post/after_min_password_length_12.png) |
+| Password Complexity Enabled | ![after_complexity_enabled.png](screenshots_post/after_complexity_enabled.png) |
+| Password Expiration 90 Days | ![after_password_age_90_days.png](screenshots_post/after_password_age_90_days.png) |
+| Password History = 4 | ![after_password_history_4.png](screenshots_post/after_password_history_4.png) |
+| Lockout Threshold = 10 | ![after_lockout_threshold_10.png](screenshots_post/after_lockout_threshold_10.png) |
+| Lockout Duration = 30 mins | ![after_lockout_duration_30min.png](screenshots_post/after_lockout_duration_30min.png) |
+| Net Accounts Config | ![after_net_accounts_output.png](screenshots_post/after_net_accounts_output.png) |
 
 ---
 
-## 🖼️ Screenshot Evidence
+## ✅ Final Compliance Summary
 
-Screenshots are split into folders:
-
-- [`screenshots_pre/`](./screenshots_pre) – Before remediation  
-- [`screenshots_post/`](./screenshots_post) – After remediation  
-
-Each screenshot is named after the PCI requirement or system setting being validated. All images are embedded directly above in the Interview Table for visual clarity.
+The system is now aligned with **PCI DSS v4.0.1 – Requirement 8** password policies.  
+All issues identified in the initial audit have been fully remediated and evidenced.  
+This repo now serves as a full audit + remediation walkthrough for future internal assessments or hiring manager review.
 
 ---
-
-## 🛠️ Remediation Summary
-
-All misconfigurations were remediated by the IT Lead. Screenshots reflect updated policies enforced through `secpol.msc`.
-
-Each remediation aligns directly with the internal audit findings documented earlier in this repo.
-
----
-
-## ✅ Compliance Conclusion
-
-The target system now meets PCI DSS v4.0.1 Requirement 8 password policy expectations.  
-A full remediation walkthrough, interview log, and evidence chain have been provided for validation and audit readiness.
-
-
-
-
-
