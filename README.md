@@ -19,14 +19,12 @@ As the ISA, I requested evidence for each PCI DSS v4.0 Requirement 8 password co
 
 | PCI Req | Assessor Question | Screenshot |
 |---------|-------------------|------------|
-| 8.3.1   | Can you pull up the minimum password length setting? | ![Before](images/pre/password-length.png) |
-| 8.3.5   | Can you show me how many previous passwords are remembered? | ![Before](images/pre/password-history.png) |
-| 8.3.6   | Where can I verify that password complexity is enabled? | ![Before](images/pre/complexity.png) |
-| 8.3.7   | Please show me the password expiration setting (in days). | ![Before](images/pre/expiration.png) |
-| 8.3.9   | Can you show me your account lockout threshold? | ![Before](images/pre/lockout-threshold.png) |
-| 8.3.9   | Can you show me lockout duration and reset time settings? | ![Before](images/pre/lockout-duration.png) |
-| CLI     | Show me 'net accounts' CLI output for global policy confirmation. | ![Before](images/pre/net-accounts.png) |
-| CLI     | Can you show me PasswordLastSet date from CLI? | ![Before](images/pre/password-last-set.png) |
+| 8.3.1   | Can you pull up the minimum password length setting? | ![](screenshots_pre/min_password_length.png) |
+| 8.3.5   | Can you show me how many previous passwords are remembered? | ![](screenshots_pre/password_history.png) |
+| 8.3.6   | Where can I verify that password complexity is enabled? | ![](screenshots_pre/complexity_disabled.png) |
+| 8.3.7   | Please show me the password expiration setting (in days). | ![](screenshots_pre/max_password_age.png) |
+| 8.3.9   | Can you show me your account lockout threshold? | ![](screenshots_pre/lockout_threshold.png) |
+| 8.3.9   | Can you show me lockout duration and reset time settings? | ![](screenshots_pre/lockout_duration.png) |
 
 > **Note:** The documented password configuration standard was requested but not available during this audit. This was noted as a soft gap under Requirement 12.
 
@@ -93,12 +91,11 @@ A follow-up validation audit will be performed after the deadline. All changes m
 
 | PCI Req | Follow-Up Question | Screenshot |
 |---------|--------------------|------------|
-| 8.3.1   | Please show updated password length setting. | ![After](images/post/password-length.png) |
-| 8.3.5   | Please show updated password history setting. | ![After](images/post/password-history.png) |
-| 8.3.6   | Can you show complexity settings again for confirmation? | ![After](images/post/complexity.png) |
-| 8.3.7   | Show password expiration setting after remediation. | ![After](images/post/expiration.png) |
-| 8.3.9   | Can you show lockout threshold and duration again? | ![After](images/post/lockout.png) |
-| CLI     | Show updated 'net accounts' CLI output. | ![After](images/post/net-accounts.png) |
+| 8.3.1   | Please show updated password length setting. | ![](screenshots_post/min_password_length.png) |
+| 8.3.5   | Please show updated password history setting. | ![](screenshots_post/password_history.png) |
+| 8.3.6   | Can you show complexity settings again for confirmation? | ![](screenshots_post/complexity_enabled.png) |
+| 8.3.7   | Show password expiration setting after remediation. | ![](screenshots_post/max_password_age.png) |
+| 8.3.9   | Can you show lockout threshold and duration again? | ![](screenshots_post/lockout_combined.png) |
 
 ---
 
